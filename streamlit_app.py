@@ -1,16 +1,15 @@
 import streamlit as st
 import pandas as pd
-import pickle
+from tensorflow.keras.models import load_model
 
 # Fungsi untuk load model
 @st.cache_resource
-def load_model():
-    with open("model.keras", "rb") as file:
-        model = pickle.load(file)
+def load_model_keras():
+    model = load_model("model.keras")  # Memuat model Keras dengan load_model()
     return model
 
 # Load model
-model = load_model()
+model = load_model_keras()
 
 # Judul aplikasi
 st.title("Prediksi Model Machine Learning dengan Data Excel")
@@ -27,8 +26,9 @@ if uploaded_file:
 
         # Prediksi menggunakan model
         if st.button("Prediksi"):
+            # Pastikan data sesuai dengan format input model
             predictions = model.predict(data)
-            data["Prediction"] = predictions
+            data["Prediction"] = predictions.argmax(axis=1)  # Jika output adalah probabilitas multi-kelas
             st.success("Prediksi berhasil!")
             st.write("Hasil Prediksi:")
             st.write(data)
