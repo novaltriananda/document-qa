@@ -5,7 +5,7 @@ import pickle
 # Fungsi untuk load model
 @st.cache_resource
 def load_model():
-    with open("model.pkl", "rb") as file:
+    with open("model.keras", "rb") as file:
         model = pickle.load(file)
     return model
 
